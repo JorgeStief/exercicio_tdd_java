@@ -20,13 +20,13 @@ class TicketProcessorTest {
     }
 
     @Test
-    void fluxoNormal() {
+    void normalFlow() {
         val invoice = new Invoice("Jorge", LocalDateTime.now(), 100.0);
 
         val values = new double[]{10.0, 60.0, 30.0};
         val tickets = Arrays.stream(values).mapToObj(v -> new Boleto(v, LocalDateTime.now(), Double.toString(v))).collect(Collectors.toList());
 
-        String resultado = processor.avaliaPagamentos(invoice, tickets);
+        String resultado = processor.evaluatesPayments(invoice, tickets);
 
         Assertions.assertEquals("PAGO", resultado);
     }
