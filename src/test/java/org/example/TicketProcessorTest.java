@@ -35,7 +35,7 @@ class TicketProcessorTest {
 
     @Test
     void invoiceNotPaid() {
-        val invoice = new Fatura("Jorge", LocalDateTime.now(), 100.0);
+        val invoice = new Ticket("Jorge", LocalDateTime.now(), 100.0);
 
         val values = new double[]{10.0};
         val tickets = getTickets(values);
@@ -43,6 +43,22 @@ class TicketProcessorTest {
         String result = processador.evaluatesPayments(invoiceEx, tickets);
 
         Assertions.assertEquals("NAO_PAGO", result);
+    }
+
+     @Test
+    void testCollection() {
+        val collection = new Object[][]{
+                {1500.0, new double[]{500.0, 400.0, 600.0}, "PAGO"},
+                {1500.0, new double[]{1000.0, 500.0, 250.0}, "PAGO"},
+                {2000.0, new double[]{500.0, 400.0}, "NAO_PAGO"}
+        };
+
+        for (Object[] entry : collection) {
+            invoiceEx.setAmount((Double) entry[0]);
+            val tickets = getTickets((double[]) entry[1]);
+
+            Assertions.assertEquals(entry[2], processor.evaluatesPayments(invoiceEx, tickets));
+        }
     }
 
     private List<Ticket> getTickets(double[] values) {
