@@ -15,18 +15,20 @@ import java.util.stream.Collectors;
 class TicketProcessorTest {
     private TicketProcessor processor;
 
+    private Invoice invoiceEx;
+
     @BeforeEach
     void setUp() {
         processor = new TicketProcessor();
+        invoiceEx = new Invoice("Jorge", LocalDateTime.now(), 100.0);
     }
 
     @Test
     void invoicePaid() {
-        val invoice = new Invoice("Jorge", LocalDateTime.now(), 100.0);
 
         val values = new double[]{10.0, 60.0, 30.0};
         val tickets = getTickets(values)
-        String result = processor.evaluatesPayments(invoice, tickets);
+        String result = processor.evaluatesPayments(invoiceEx, tickets);
 
         Assertions.assertEquals("PAGO", result);
     }
@@ -38,7 +40,7 @@ class TicketProcessorTest {
         val values = new double[]{10.0};
         val tickets = getTickets(values);
 
-        String result = processador.avaliaPagamentos(invoice, tickets);
+        String result = processador.evaluatesPayments(invoiceEx, tickets);
 
         Assertions.assertEquals("NAO_PAGO", result);
     }
